@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -7,11 +8,14 @@ namespace AsyncEnumerablePagination.Test
 {
     public class UnitTest1
     {
-        [Fact]
-        public async Task AllAsyncTest()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(10)]
+        [InlineData(33)]
+        [InlineData(1001)]
+        public async Task AllAsyncTest(int numberOfEntities)
         {
-            const int numberOfEntities = 1000;
-            using var ctx = CreateTestDatabaseWithData(numberOfEntities, "AllAsyncTest");
+            using var ctx = CreateTestDatabaseWithData(numberOfEntities);
             var sut = new MyExampleRepository(ctx);
 
             var list = new List<MyExampleEntity>();
@@ -24,11 +28,14 @@ namespace AsyncEnumerablePagination.Test
             Assert.Equal(numberOfEntities, list.Count);
         }
 
-        [Fact]
-        public async Task AllWithPrefatchAsyncTest()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(10)]
+        [InlineData(33)]
+        [InlineData(1001)]
+        public async Task AllWithPrefatchAsyncTest(int numberOfEntities)
         {
-            const int numberOfEntities = 1000;
-            using var ctx = CreateTestDatabaseWithData(numberOfEntities, "AllWithPrefatchAsyncTest");
+            using var ctx = CreateTestDatabaseWithData(numberOfEntities);
             var sut = new MyExampleRepository(ctx);
 
             var list = new List<MyExampleEntity>();
@@ -41,11 +48,14 @@ namespace AsyncEnumerablePagination.Test
             Assert.Equal(numberOfEntities, list.Count);
         }
 
-        [Fact]
-        public async Task AllWithPrefatchUnknownTotalSizeAsyncTest()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(10)]
+        [InlineData(33)]
+        [InlineData(1001)]
+        public async Task AllWithPrefatchUnknownTotalSizeAsyncTest(int numberOfEntities)
         {
-            const int numberOfEntities = 1000;
-            using var ctx = CreateTestDatabaseWithData(numberOfEntities, "AllWithPrefatchUnknownTotalSizeAsyncTest");
+            using var ctx = CreateTestDatabaseWithData(numberOfEntities);
             var sut = new MyExampleRepository(ctx);
 
             var list = new List<MyExampleEntity>();
@@ -58,10 +68,10 @@ namespace AsyncEnumerablePagination.Test
             Assert.Equal(numberOfEntities, list.Count);
         }
 
-        private static MyExampleDbContext CreateTestDatabaseWithData(int numberOfEntities, string databaseName)
+        private static MyExampleDbContext CreateTestDatabaseWithData(int numberOfEntities)
         {
             var options = new DbContextOptionsBuilder<MyExampleDbContext>()
-                .UseInMemoryDatabase(databaseName: databaseName)
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
             var ctx = new MyExampleDbContext(options);
