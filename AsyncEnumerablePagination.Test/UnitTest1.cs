@@ -10,9 +10,9 @@ namespace AsyncEnumerablePagination.Test
     {
         [Theory]
         [InlineData(0)]
+        [InlineData(5)]
         [InlineData(10)]
-        [InlineData(33)]
-        [InlineData(1001)]
+        [InlineData(333)]
         public async Task AllAsyncTest(int numberOfEntities)
         {
             using var ctx = CreateTestDatabaseWithData(numberOfEntities);
@@ -30,9 +30,9 @@ namespace AsyncEnumerablePagination.Test
 
         [Theory]
         [InlineData(0)]
+        [InlineData(5)]
         [InlineData(10)]
-        [InlineData(33)]
-        [InlineData(1001)]
+        [InlineData(333)]
         public async Task AllWithPrefatchAsyncTest(int numberOfEntities)
         {
             using var ctx = CreateTestDatabaseWithData(numberOfEntities);
@@ -50,9 +50,9 @@ namespace AsyncEnumerablePagination.Test
 
         [Theory]
         [InlineData(0)]
+        [InlineData(5)]
         [InlineData(10)]
-        [InlineData(33)]
-        [InlineData(1001)]
+        [InlineData(333)]
         public async Task AllWithPrefatchUnknownTotalSizeAsyncTest(int numberOfEntities)
         {
             using var ctx = CreateTestDatabaseWithData(numberOfEntities);
