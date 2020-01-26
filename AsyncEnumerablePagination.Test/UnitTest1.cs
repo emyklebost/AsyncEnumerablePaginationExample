@@ -48,26 +48,6 @@ namespace AsyncEnumerablePagination.Test
             Assert.Equal(numberOfEntities, list.Count);
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(5)]
-        [InlineData(10)]
-        [InlineData(333)]
-        public async Task AllWithPrefatchUnknownTotalSizeAsyncTest(int numberOfEntities)
-        {
-            using var ctx = CreateTestDatabaseWithData(numberOfEntities);
-            var sut = new MyExampleRepository(ctx);
-
-            var list = new List<MyExampleEntity>();
-
-            await foreach (var entity in sut.AllWithPrefatchUnknownTotalSizeAsync())
-            {
-                list.Add(entity);
-            }
-
-            Assert.Equal(numberOfEntities, list.Count);
-        }
-
         private static MyExampleDbContext CreateTestDatabaseWithData(int numberOfEntities)
         {
             var options = new DbContextOptionsBuilder<MyExampleDbContext>()
