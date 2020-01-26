@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Microsoft.EntityFrameworkCore;
 
 namespace AsyncEnumerablePagination
@@ -87,27 +86,23 @@ namespace AsyncEnumerablePagination
 
             for (int i = 1; ; ++i)
             {
-                var cancellationTokenSource = new CancellationTokenSource();
-
-                var task = _context.Entities
-                    .Skip(pageSize * i)
-                    .Take(pageSize)
-                    .ToListAsync(cancellationTokenSource.Token);
-
                 var page = await prefetchTask;
+                bool isLastpage = page.Count() < pageSize;
+
+                if (!isLastpage)
+                {
+                    prefetchTask = _context.Entities
+                        .Skip(pageSize * i)
+                        .Take(pageSize)
+                        .ToListAsync();
+                }
 
                 foreach (var entity in page)
                 {
                     yield return entity;
                 }
 
-                if (page.Count() < pageSize)
-                {
-                    cancellationTokenSource.Cancel();
-                    break;
-                }
-
-                prefetchTask = task;
+                if (isLastpage) yield break;
             }
         }
     }
