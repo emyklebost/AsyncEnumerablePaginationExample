@@ -11,7 +11,7 @@ namespace AsyncEnumerablePagination.Test
         public async Task AllAsyncTest()
         {
             const int numberOfEntities = 1000;
-            using var ctx = CreateTestDatabaseWithData(numberOfEntities);
+            using var ctx = CreateTestDatabaseWithData(numberOfEntities, "AllAsyncTest");
             var sut = new MyExampleRepository(ctx);
 
             var list = new List<MyExampleEntity>();
@@ -28,7 +28,7 @@ namespace AsyncEnumerablePagination.Test
         public async Task AllWithPrefatchAsyncTest()
         {
             const int numberOfEntities = 1000;
-            using var ctx = CreateTestDatabaseWithData(numberOfEntities);
+            using var ctx = CreateTestDatabaseWithData(numberOfEntities, "AllWithPrefatchAsyncTest");
             var sut = new MyExampleRepository(ctx);
 
             var list = new List<MyExampleEntity>();
@@ -41,10 +41,10 @@ namespace AsyncEnumerablePagination.Test
             Assert.Equal(numberOfEntities, list.Count);
         }
 
-        private static MyExampleDbContext CreateTestDatabaseWithData(int numberOfEntities)
+        private static MyExampleDbContext CreateTestDatabaseWithData(int numberOfEntities, string databaseName)
         {
             var options = new DbContextOptionsBuilder<MyExampleDbContext>()
-                .UseInMemoryDatabase(databaseName: "test-database")
+                .UseInMemoryDatabase(databaseName: databaseName)
                 .Options;
 
             var ctx = new MyExampleDbContext(options);
