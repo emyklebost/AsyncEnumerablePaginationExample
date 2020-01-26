@@ -50,9 +50,9 @@ namespace AsyncEnumerablePagination
 
             if (numberOfPages == 1)
             {
-                var hits = await prefetchTask;
+                var page = await prefetchTask;
 
-                foreach (var entity in hits)
+                foreach (var entity in page)
                 {
                     yield return entity;
                 }
@@ -67,10 +67,10 @@ namespace AsyncEnumerablePagination
                     .Take(pageSize)
                     .ToListAsync();
 
-                var hits = await prefetchTask;
+                var page = await prefetchTask;
                 prefetchTask = task;
 
-                foreach (var entity in hits)
+                foreach (var entity in page)
                 {
                     yield return entity;
                 }
@@ -94,14 +94,14 @@ namespace AsyncEnumerablePagination
                     .Take(pageSize)
                     .ToListAsync(cancellationTokenSource.Token);
 
-                var hits = await prefetchTask;
+                var page = await prefetchTask;
 
-                foreach (var entity in hits)
+                foreach (var entity in page)
                 {
                     yield return entity;
                 }
 
-                if (hits.Count() < pageSize)
+                if (page.Count() < pageSize)
                 {
                     cancellationTokenSource.Cancel();
                     break;
