@@ -96,7 +96,7 @@ namespace AsyncEnumerablePagination
 
                 var hits = await prefetchTask;
 
-                if (hits.Any())
+                if (hits.Count() == pageSize)
                 {
                     prefetchTask = task;
                 }
