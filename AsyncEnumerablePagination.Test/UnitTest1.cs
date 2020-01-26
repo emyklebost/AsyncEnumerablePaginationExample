@@ -41,6 +41,23 @@ namespace AsyncEnumerablePagination.Test
             Assert.Equal(numberOfEntities, list.Count);
         }
 
+        [Fact]
+        public async Task AllWithPrefatchUnknownTotalSizeAsyncTest()
+        {
+            const int numberOfEntities = 1000;
+            using var ctx = CreateTestDatabaseWithData(numberOfEntities, "AllWithPrefatchUnknownTotalSizeAsyncTest");
+            var sut = new MyExampleRepository(ctx);
+
+            var list = new List<MyExampleEntity>();
+
+            await foreach (var entity in sut.AllWithPrefatchUnknownTotalSizeAsync())
+            {
+                list.Add(entity);
+            }
+
+            Assert.Equal(numberOfEntities, list.Count);
+        }
+
         private static MyExampleDbContext CreateTestDatabaseWithData(int numberOfEntities, string databaseName)
         {
             var options = new DbContextOptionsBuilder<MyExampleDbContext>()
