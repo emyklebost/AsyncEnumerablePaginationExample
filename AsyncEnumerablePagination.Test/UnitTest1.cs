@@ -33,14 +33,14 @@ namespace AsyncEnumerablePagination.Test
         [InlineData(5)]
         [InlineData(10)]
         [InlineData(333)]
-        public async Task AllWithPrefatchAsyncTest(int numberOfEntities)
+        public async Task AllWithPrefetchAsyncTest(int numberOfEntities)
         {
             using var ctx = CreateTestDatabaseWithData(numberOfEntities);
             var sut = new MyExampleRepository(ctx);
 
             var list = new List<MyExampleEntity>();
 
-            await foreach (var entity in sut.AllWithPrefatchAsync())
+            await foreach (var entity in sut.AllWithPrefetchAsync())
             {
                 list.Add(entity);
             }

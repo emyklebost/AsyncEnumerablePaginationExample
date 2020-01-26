@@ -33,7 +33,7 @@ namespace AsyncEnumerablePagination
             }
         }
 
-        public async IAsyncEnumerable<MyExampleEntity> AllWithPrefatchAsync()
+        public async IAsyncEnumerable<MyExampleEntity> AllWithPrefetchAsync()
         {
             const int pageSize = 10;
 
