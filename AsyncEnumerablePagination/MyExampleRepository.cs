@@ -37,7 +37,7 @@ namespace AsyncEnumerablePagination
 
         public async IAsyncEnumerable<MyExampleEntity> AllWithPrefatchAsync()
         {
-            const int pageSize = 10;
+            const int pageSize = 1000;
 
             double totalCount = await _context.Entities.CountAsync();
             int numberOfPages = (int)Math.Ceiling(totalCount / pageSize);
@@ -47,6 +47,18 @@ namespace AsyncEnumerablePagination
             var prefetchTask = _context.Entities
                 .Take(pageSize)
                 .ToListAsync();
+
+            if (numberOfPages == 1)
+            {
+                var hits = await prefetchTask;
+
+                foreach (var entity in hits)
+                {
+                    yield return entity;
+                }
+
+                yield break;
+            }
 
             for (int i = 1; i <= numberOfPages; ++i)
             {
